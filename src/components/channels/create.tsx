@@ -23,14 +23,13 @@ const CreateChannel = () => {
           const desc = descRef.current.value;
 
           if (name && desc) {
-            const event = await publish({
+            publish({
               kind: 40,
               content: JSON.stringify({
                 name,
                 desc,
               }),
             });
-            console.log(event);
           }
         }}
       >

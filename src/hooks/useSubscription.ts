@@ -9,6 +9,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 export interface IUseSubscription {
+  restartSubscription: () => void;
   subscription: NDKSubscription;
   events: NDKEvent[];
 }
@@ -31,14 +32,22 @@ export const useSubscription = ({
 
   const startSubscription = useCallback(() => {
     if (ndk) {
+      if (events.length) setEvents([]);
+
       const newSubscription = ndk.subscribe(filters, options);
-      console.log(filters);
       setSubscription(newSubscription);
       return;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subscription, enabled]);
+  }, [filters, options, enabled]);
+
+  const restartSubscription = () => {
+    console.log(filters);
+    setEvents([]);
+    stopSubscription(subscription);
+    startSubscription();
+  };
 
   useEffect(() => {
     if (enabled) startSubscription();
@@ -62,6 +71,7 @@ export const useSubscription = ({
   }, [subscription, enabled]);
 
   return {
+    restartSubscription,
     subscription,
     events,
   };

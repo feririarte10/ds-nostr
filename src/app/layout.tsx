@@ -1,3 +1,4 @@
+import LoginProvider from "@/components/connect/LoginProvider";
 import { NostrifyProvider } from "@/contexts/Nostrify";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -17,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NostrifyProvider explicitRelayUrls={["wss://relay.damus.io/"]}>
-          {children}
+          <LoginProvider>{children}</LoginProvider>
         </NostrifyProvider>
       </body>
     </html>
