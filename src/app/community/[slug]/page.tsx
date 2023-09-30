@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { NDKEvent, NostrEvent } from "@nostr-dev-kit/ndk";
 import CreateChannel from "@/components/channels/create";
 import { useSubscription } from "@/hooks/useSubscription";
-import Link from "next/link";
+import ChannelFrame from "@/components/channels/frame";
 
 interface CommunityProps {
   name: string;
@@ -13,12 +13,14 @@ interface CommunityProps {
 }
 
 const Community = ({ params }: { params: { slug: string } }) => {
-  const { ndk } = useNostrify();
+  const { ndk, userPubkey } = useNostrify();
   const [communityInfo, setCommunityInfo] = useState<CommunityProps>({
     name: "",
     desc: "",
     event: null,
   });
+
+  const [selectedChannel, setSelectedChannel] = useState<string>("");
 
   const { events: channels } = useSubscription({
     filters: [
@@ -68,11 +70,12 @@ const Community = ({ params }: { params: { slug: string } }) => {
             const parsedContent = JSON.parse(eventChannel.content);
 
             return (
-              <div key={index}>
-                <Link href={`/channel/${eventChannel.id}`}>
-                  {parsedContent.name}
-                </Link>
-              </div>
+              <button
+                key={index}
+                onClick={() => setSelectedChannel(eventChannel.id)}
+              >
+                {parsedContent.name}
+              </button>
             );
           })}
         </>
@@ -80,7 +83,13 @@ const Community = ({ params }: { params: { slug: string } }) => {
         <span>No hay canales de texto</span>
       )}
 
-      <CreateChannel />
+      {selectedChannel.length > 0 ? (
+        <ChannelFrame channelId={selectedChannel} />
+      ) : (
+        <span>No has seleccionado ningún canal de texto</span>
+      )}
+
+      {communityInfo.event?.pubkey === userPubkey && <CreateChannel />}
     </div>
   );
 };
