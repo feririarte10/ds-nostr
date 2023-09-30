@@ -4,7 +4,7 @@ import SelfComunnity from "@/components/community/selfcomunnity";
 import { useNostrify } from "@/contexts/Nostrify";
 
 export default function Home() {
-  const { providers, userPubkey } = useNostrify();
+  const { userPubkey } = useNostrify();
 
   return (
     <main>

@@ -6,7 +6,7 @@ const SelfComunnity = ({ pubkey }: { pubkey: string }) => {
   const { events: userCommunityList } = useSubscription({
     filters: [
       {
-        kinds: [15015],
+        kinds: [30015],
         authors: [pubkey],
       },
     ],

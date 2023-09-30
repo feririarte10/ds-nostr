@@ -27,6 +27,7 @@ const Community = ({ params }: { params: { slug: string } }) => {
       {
         kinds: [40],
         authors: [communityInfo.event?.pubkey],
+        "#e": [communityInfo.event?.id],
       },
     ],
     options: {
@@ -83,13 +84,17 @@ const Community = ({ params }: { params: { slug: string } }) => {
         <span>No hay canales de texto</span>
       )}
 
+      <br />
+
       {selectedChannel.length > 0 ? (
         <ChannelFrame channelId={selectedChannel} />
       ) : (
         <span>No has seleccionado ningún canal de texto</span>
       )}
 
-      {communityInfo.event?.pubkey === userPubkey && <CreateChannel />}
+      {communityInfo.event?.pubkey === userPubkey && (
+        <CreateChannel communityId={communityInfo.event.id} />
+      )}
     </div>
   );
 };

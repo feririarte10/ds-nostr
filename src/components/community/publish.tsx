@@ -23,11 +23,12 @@ const PublishCommunity = () => {
 
           if (name && desc)
             publish({
-              kind: 15015,
+              kind: 30015,
               content: JSON.stringify({
                 name,
                 desc,
               }),
+              tags: [["d", "second-community"]],
             });
         }}
       >

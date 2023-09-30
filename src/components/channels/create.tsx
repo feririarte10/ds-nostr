@@ -2,10 +2,12 @@
 import usePublishEvent from "@/hooks/usePublishEvent";
 import React, { useRef } from "react";
 
-const CreateChannel = () => {
+const CreateChannel = ({ communityId }: { communityId: string }) => {
   const { publish } = usePublishEvent();
   const nameRef = useRef();
   const descRef = useRef();
+
+  if (!communityId) return <span>Cargando...</span>;
 
   return (
     <div>
@@ -29,6 +31,7 @@ const CreateChannel = () => {
                 name,
                 desc,
               }),
+              tags: [["e", communityId]],
             });
           }
         }}
