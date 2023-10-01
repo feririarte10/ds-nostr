@@ -54,46 +54,44 @@ const Community = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <div>
-        <h2>Nombre de la comunidad:</h2>
-        <span>{communityInfo.name}</span>
-      </div>
+      <aside className="navigationContainer">
+        <div>
+          <h2>{communityInfo.name}</h2>
+          <span>{communityInfo.desc}</span>
+        </div>
 
-      <div>
-        <h2>Descripción:</h2>
-        <span>{communityInfo.desc}</span>
-      </div>
+        <div>
+          <h2>Canales de texto: </h2>
+          {channels.length > 0 ? (
+            <>
+              {channels.map((eventChannel, index) => {
+                const parsedContent = JSON.parse(eventChannel.content);
 
-      {channels.length > 0 ? (
-        <>
-          <h2>Canales encontrados: </h2>
-          {channels.map((eventChannel, index) => {
-            const parsedContent = JSON.parse(eventChannel.content);
+                return (
+                  <button
+                    key={index}
+                    style={{ marginBottom: "5px" }}
+                    onClick={() => setSelectedChannel(eventChannel.id)}
+                  >
+                    # {parsedContent.name}
+                  </button>
+                );
+              })}
+            </>
+          ) : (
+            <span>No hay canales de texto</span>
+          )}
+        </div>
 
-            return (
-              <button
-                key={index}
-                onClick={() => setSelectedChannel(eventChannel.id)}
-              >
-                {parsedContent.name}
-              </button>
-            );
-          })}
-        </>
-      ) : (
-        <span>No hay canales de texto</span>
-      )}
-
-      <br />
+        {communityInfo.event?.pubkey === userPubkey && (
+          <CreateChannel communityId={communityInfo.event.id} />
+        )}
+      </aside>
 
       {selectedChannel.length > 0 ? (
         <ChannelFrame channelId={selectedChannel} />
       ) : (
         <span>No has seleccionado ningún canal de texto</span>
-      )}
-
-      {communityInfo.event?.pubkey === userPubkey && (
-        <CreateChannel communityId={communityInfo.event.id} />
       )}
     </div>
   );
