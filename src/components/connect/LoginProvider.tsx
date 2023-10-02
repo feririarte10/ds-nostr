@@ -1,12 +1,24 @@
 //@ts-nocheck
 "use client";
 import { useNostrify } from "@/contexts/Nostrify";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "@/styles/login.css";
 
 const LoginProvider = ({ children }) => {
-  const { connectWithExtension, connectWithHexKey, userPubkey } = useNostrify();
+  const {
+    createNostrAccount,
+    connectWithExtension,
+    connectWithKey,
+    connectWithHexKey,
+    userPubkey,
+  } = useNostrify();
   const hexInputRef = useRef();
+
+  useEffect(() => {
+    const localPrivateKey: string = localStorage.getItem("private_key");
+    if (localPrivateKey) connectWithHexKey(localPrivateKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (userPubkey.length > 0) return children;
 
@@ -18,7 +30,10 @@ const LoginProvider = ({ children }) => {
           Conectarse con extensión
         </button>
 
-        <button className="button">Crear una cuenta</button>
+        <button className="button" onClick={createNostrAccount}>
+          Crear nueva cuenta
+        </button>
+
         <input
           type="text"
           ref={hexInputRef}
@@ -28,9 +43,7 @@ const LoginProvider = ({ children }) => {
         <button
           className="button"
           onClick={async () => {
-            const connected = await connectWithHexKey(
-              hexInputRef.current.value
-            );
+            const connected = await connectWithKey(hexInputRef.current.value);
 
             if (!connected) alert("ocurrió un error");
           }}

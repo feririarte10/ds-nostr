@@ -13,6 +13,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { nip06, nip19 } from "nostr-tools";
 
 declare global {
   interface Window {
@@ -28,7 +29,9 @@ type LightningProvidersType = {
 export interface INostrContext {
   providers: LightningProvidersType;
   ndk: NDK;
+  createNostrAccount: () => void;
   connectWithExtension: () => void;
+  connectWithKey: (privateKey: string) => Promise<boolean>;
   connectWithHexKey: (hexKey: string) => Promise<boolean>;
   requestPublicKey: () => Promise<string>;
   userPubkey: string;
@@ -51,17 +54,6 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
       webln: window.webln,
       nostr: window.nostr,
     });
-
-    if (window.nostr) {
-      const nip07signer = new NDKNip07Signer();
-      const ndkProvider = new NDK({
-        explicitRelayUrls,
-        signer: nip07signer,
-      });
-      setNDK(ndkProvider);
-
-      await ndkProvider.connect();
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,13 +65,30 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
         explicitRelayUrls,
         signer,
       });
+
       setNDK(ndkProvider);
 
-      await ndkProvider.connect();
+      ndkProvider.connect();
       return true;
-    } catch {
+    } catch (err) {
+      console.log(err);
       return false;
     }
+  };
+
+  const createNostrAccount = () => {
+    const privateKey = nip06.privateKeyFromSeedWords(nip06.generateSeedWords());
+    connectWithHexKey(privateKey);
+  };
+
+  const connectWithKey = async (privateKey: string) => {
+    if (privateKey.substring(0, 4) !== "nsec")
+      return connectWithKey(privateKey);
+
+    const { type, data } = nip19.decode(privateKey);
+    if (type !== "nsec") return null;
+
+    return connectWithHexKey(data);
   };
 
   const connectWithHexKey = async (hexKey: string): Promise<boolean> => {
@@ -90,8 +99,10 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
       const user: NDKUser = await privateKeySigner.user();
       if (user && user._hexpubkey) setUserPubkey(user._hexpubkey);
 
+      localStorage.setItem("private_key", hexKey);
       return ndkInitialized;
-    } catch {
+    } catch (err) {
+      console.log(err);
       return false;
     }
   };
@@ -125,7 +136,9 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
   return {
     providers,
     ndk,
+    createNostrAccount,
     connectWithExtension,
+    connectWithKey,
     connectWithHexKey,
     userPubkey,
     requestPublicKey,

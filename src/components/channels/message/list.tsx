@@ -1,6 +1,7 @@
 import { useSubscription } from "@/hooks/useSubscription";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import { nip19 } from "nostr-tools";
 
 const formatAddress = (address: string, size: number = 22): string => {
   if (address) {
@@ -48,7 +49,7 @@ const MessagesList = ({ channelId }: { channelId: string }) => {
                 <Image src="/avatar.jpg" alt="Avatar" width={40} height={40} />
                 <div className="message-info">
                   <span className="message-author">
-                    {formatAddress(eventMessage.pubkey, 8)}
+                    {formatAddress(nip19.npubEncode(eventMessage.pubkey), 12)}
                   </span>
                   <span className="message-date">
                     {new Date(
