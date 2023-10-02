@@ -5,6 +5,7 @@ import { NDKEvent, NostrEvent } from "@nostr-dev-kit/ndk";
 import CreateChannel from "@/components/channels/create";
 import { useSubscription } from "@/hooks/useSubscription";
 import ChannelFrame from "@/components/channels/frame";
+import "@/styles/community.css";
 
 interface CommunityProps {
   name: string;
@@ -54,30 +55,28 @@ const Community = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <aside className="navigationContainer">
-        <div>
-          <h2>{communityInfo.name}</h2>
-          <span>{communityInfo.desc}</span>
-        </div>
+      <aside className="sidebar">
+        <h2>{communityInfo.name}</h2>
 
         <div>
-          <h2>Canales de texto: </h2>
+          <h3>Canales de texto: </h3>
           {channels.length > 0 ? (
-            <>
+            <ul>
               {channels.map((eventChannel, index) => {
                 const parsedContent = JSON.parse(eventChannel.content);
 
                 return (
-                  <button
-                    key={index}
-                    style={{ marginBottom: "5px" }}
-                    onClick={() => setSelectedChannel(eventChannel.id)}
-                  >
-                    # {parsedContent.name}
-                  </button>
+                  <li key={index} className="channel active">
+                    <button
+                      style={{ marginBottom: "5px" }}
+                      onClick={() => setSelectedChannel(eventChannel.id)}
+                    >
+                      # {parsedContent.name}
+                    </button>
+                  </li>
                 );
               })}
-            </>
+            </ul>
           ) : (
             <span>No hay canales de texto</span>
           )}
@@ -91,7 +90,9 @@ const Community = ({ params }: { params: { slug: string } }) => {
       {selectedChannel.length > 0 ? (
         <ChannelFrame channelId={selectedChannel} />
       ) : (
-        <span>No has seleccionado ningún canal de texto</span>
+        <div className="content">
+          <span>No has seleccionado ningún canal de texto</span>
+        </div>
       )}
     </div>
   );

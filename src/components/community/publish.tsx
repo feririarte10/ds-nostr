@@ -23,7 +23,7 @@ const PublishCommunity = () => {
 
           if (name && desc)
             publish({
-              kind: 30015,
+              kind: 33015,
               content: JSON.stringify({
                 name,
                 desc,

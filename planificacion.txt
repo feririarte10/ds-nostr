@@ -1,0 +1,47 @@
+Crear comunidad (33015, #d = randomId, #t "community")
+Crear categoria (33015 - #d randomId, #t "category, #e id_comunidad) // author = ownerCommunity & admins
+Crear canal de texto (33015 - #d randomId, #t "channel", #e id_comunidad, #e id_category) // author = ownerCommunity & admins
+
+Mensaje en canal de texto (33016 - #d randomId, #e id_canal)
+
+Ingreso a una comunidad (33017, #t "join-community")
+Verificar un usuario (33017, #t "verify-user") // author = ownerCommunity & admins
+
+User: {
+  npub: string
+  name: string
+  about: string
+  image: string
+}
+
+Community: {
+   id: string,
+   name: string
+   desc: string
+   logo: string
+   banner: string
+   created_at: string
+   event
+}
+
+Category: {
+  id: string,
+  name: string
+  created_at: string
+  event
+}
+
+Channel: {
+  id: string,
+  name: string
+  created_at: string
+  event
+}
+
+Message: {
+  id: string,
+  user: User,
+  channel: Channel,
+  text: string,
+  event
+}

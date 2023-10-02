@@ -2,7 +2,6 @@
 import { useNostrify } from "@/contexts/Nostrify";
 import React, { useEffect, useState } from "react";
 import { NDKEvent, NostrEvent } from "@nostr-dev-kit/ndk";
-import { useSubscription } from "@/hooks/useSubscription";
 import CreateMessage from "@/components/channels/message/create";
 import MessagesList from "./message/list";
 
@@ -37,16 +36,13 @@ const ChannelFrame = ({ channelId }: { channelId: string }) => {
   if (!channelInfo.event) return <span>No has seleccionado ningún canal</span>;
 
   return (
-    <div style={{ border: "1px solid", padding: "10px", margin: "1rem" }}>
-      <div>
-        <h2>Nombre del canal:</h2>
-        <span>{channelInfo.name}</span>
-      </div>
-
+    <div className="content">
+      <div className="channel-title">{channelInfo.name}</div>
+      {/* 
       <div>
         <h2>Descripción:</h2>
         <span>{channelInfo.desc}</span>
-      </div>
+      </div> */}
 
       <MessagesList channelId={channelInfo.event?.id} />
 

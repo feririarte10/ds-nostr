@@ -28,7 +28,7 @@ type LightningProvidersType = {
 export interface INostrContext {
   providers: LightningProvidersType;
   ndk: NDK;
-  connect: () => void;
+  connectWithExtension: () => void;
   connectWithHexKey: (hexKey: string) => Promise<boolean>;
   requestPublicKey: () => Promise<string>;
   userPubkey: string;
@@ -96,8 +96,9 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
     }
   };
 
-  const connect = async () => {
-    if (!providers.webln) return null;
+  const connectWithExtension = async () => {
+    if (!providers.webln)
+      return alert("No tienes una extensión que te permita conectarte");
     await providers.webln.enable();
 
     const pubKey = await requestPublicKey();
@@ -124,7 +125,7 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
   return {
     providers,
     ndk,
-    connect,
+    connectWithExtension,
     connectWithHexKey,
     userPubkey,
     requestPublicKey,

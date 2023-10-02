@@ -1,0 +1,116 @@
+/* Estilo para la barra lateral */
+.sidebar {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #36393f;
+  padding-top: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column; /* Para que los servidores y canales estén en columnas */
+  padding: 10px;
+}
+
+/* Estilo para la barra de servidores */
+.server-bar {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #2f3136;
+  border-right: 1px solid #202225;
+  overflow-y: scroll;
+}
+
+.server {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.server:hover {
+  background-color: #7289da;
+}
+
+/* Estilo para el contenido principal */
+.content {
+  margin-left: 260px;
+  padding: 20px;
+}
+
+.channel-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.messages {
+  border: 1px solid #ddd;
+  min-height: 500px;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.message-input {
+  margin-top: 20px;
+  display: flex;
+}
+
+.message-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.message-input button {
+  background-color: #7289da;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Estilo para los mensajes */
+.messages {
+  border: 1px solid #5d5d5d5b;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.message img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-info {
+  flex-grow: 1;
+}
+
+.message-author {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.message-date {
+  color: #666;
+}
+
+.message p {
+  background-color: #5d5d5d5b;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 100%;
+  overflow-y: auto;
+}

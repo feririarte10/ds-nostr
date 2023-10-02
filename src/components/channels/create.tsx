@@ -5,7 +5,7 @@ import React, { useRef } from "react";
 const CreateChannel = ({ communityId }: { communityId: string }) => {
   const { publish } = usePublishEvent();
   const nameRef = useRef();
-  const descRef = useRef();
+  // const descRef = useRef();
 
   if (!communityId) return <span>Cargando...</span>;
 
@@ -15,21 +15,20 @@ const CreateChannel = ({ communityId }: { communityId: string }) => {
       <label htmlFor="name">Nombre</label>
       <input name="name" ref={nameRef} type="text" />
 
-      <label htmlFor="desc">Descripción</label>
-      <input name="desc" ref={descRef} type="text" />
+      {/* <label htmlFor="desc">Descripción</label>
+      <input name="desc" ref={descRef} type="text" /> */}
 
       <button
         type="submit"
         onClick={async () => {
           const name = nameRef.current.value;
-          const desc = descRef.current.value;
+          // const desc = descRef.current.value;
 
-          if (name && desc) {
+          if (name) {
             publish({
               kind: 40,
               content: JSON.stringify({
                 name,
-                desc,
               }),
               tags: [["e", communityId]],
             });

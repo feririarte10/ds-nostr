@@ -27,8 +27,6 @@ export const useSubscription = ({
 }: SubscriptionProps) => {
   const { ndk }: INostrContext = useNostrify();
 
-  console.log(filters);
-
   const [subscription, setSubscription] = useState<NDKSubscription>();
   const [events, setEvents] = useState<NDKEvent[]>([]);
 
@@ -45,7 +43,6 @@ export const useSubscription = ({
   }, [filters, options, enabled]);
 
   const restartSubscription = () => {
-    console.log(filters);
     setEvents([]);
     stopSubscription(subscription);
     startSubscription();
@@ -65,7 +62,6 @@ export const useSubscription = ({
     if (subscription && enabled) {
       const readEvents = subscription?.on("event", async (event: NDKEvent) => {
         const nEvent: NostrEvent = await event.toNostrEvent();
-        console.log(nEvent);
         setEvents((prev) => [...prev, nEvent]);
       });
 
