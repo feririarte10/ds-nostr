@@ -1,89 +1,71 @@
 "use client";
-import { useNostrify } from "@/contexts/Nostrify";
-import React, { useEffect, useState } from "react";
-import { NDKEvent, NostrEvent } from "@nostr-dev-kit/ndk";
+import CreateCategory from "@/components/category/create";
 import CreateChannel from "@/components/channels/create";
-import { useSubscription } from "@/hooks/useSubscription";
 import ChannelFrame from "@/components/channels/frame";
+import { useNostrify } from "@/contexts/Nostrify";
+import useCommunity from "@/hooks/useCommunity";
 import "@/styles/community.css";
-
-interface CommunityProps {
-  name: string;
-  desc: string;
-  event: NostrEvent;
-}
+import _ from "lodash";
 
 const Community = ({ params }: { params: { slug: string } }) => {
-  const { ndk, userPubkey } = useNostrify();
-  const [communityInfo, setCommunityInfo] = useState<CommunityProps>({
-    name: "",
-    desc: "",
-    event: null,
-  });
-
-  const [selectedChannel, setSelectedChannel] = useState<string>("");
-
-  const { events: channels } = useSubscription({
-    filters: [
-      {
-        kinds: [40],
-        authors: [communityInfo.event?.pubkey],
-        "#e": [communityInfo.event?.id],
-      },
-    ],
-    options: {
-      closeOnEose: false,
-    },
-    enabled: Boolean(communityInfo.event?.pubkey),
-  });
-
-  useEffect(() => {
-    if (!params.slug) return;
-
-    if (ndk)
-      ndk.fetchEvent({ ids: [params.slug] }).then(async (event: NDKEvent) => {
-        if (event) {
-          const nEvent: NostrEvent = await event.toNostrEvent();
-          const commInfo = JSON.parse(nEvent.content);
-          setCommunityInfo({ ...commInfo, event: nEvent });
-        }
-      });
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ndk]);
+  const { userPubkey } = useNostrify();
+  const { communityInfo, categoriesInfo, selectedChannel, setSelectedChannel } =
+    useCommunity(params.slug);
 
   if (!communityInfo.event) return <span>Cargando...</span>;
+
+  console.log(categoriesInfo);
 
   return (
     <div>
       <aside className="sidebar">
-        <h2>{communityInfo.name}</h2>
+        <h1>{communityInfo.name}</h1>
 
         <div>
-          <h3>Canales de texto: </h3>
-          {channels.length > 0 ? (
+          {/* <h3>Canales de texto: </h3> */}
+          {_.size(categoriesInfo) > 0 ? (
             <ul>
-              {channels.map((eventChannel, index) => {
-                const parsedContent = JSON.parse(eventChannel.content);
+              {_.map(categoriesInfo, (infoCategory, index) => {
+                const parsedContent = JSON.parse(infoCategory.category.content);
 
                 return (
-                  <li key={index} className="channel active">
-                    <button
-                      style={{ marginBottom: "5px" }}
-                      onClick={() => setSelectedChannel(eventChannel.id)}
-                    >
-                      # {parsedContent.name}
-                    </button>
-                  </li>
+                  <>
+                    <h3>{parsedContent.name}</h3>
+                    {infoCategory.channels.length > 0 ? (
+                      infoCategory.channels.map((channel) => {
+                        const channelContent = JSON.parse(channel.content);
+
+                        return (
+                          <li key={index} className="channel active">
+                            <button
+                              style={{ marginBottom: "5px" }}
+                              onClick={() => setSelectedChannel(channel.id)}
+                            >
+                              # {channelContent.name}
+                            </button>
+                          </li>
+                        );
+                      })
+                    ) : (
+                      <span>No hay canales de texto</span>
+                    )}
+                  </>
                 );
               })}
             </ul>
           ) : (
-            <span>No hay canales de texto</span>
+            <span>No hay nada para ver</span>
           )}
         </div>
 
         {communityInfo.event?.pubkey === userPubkey && (
-          <CreateChannel communityId={communityInfo.event.id} />
+          <>
+            <CreateCategory communityId={communityInfo.event.id} />
+            <CreateChannel
+              communityId={communityInfo.event.id}
+              categoryId="1"
+            />
+          </>
         )}
       </aside>
 

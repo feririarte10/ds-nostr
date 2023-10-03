@@ -1,5 +1,6 @@
 //@ts-nocheck
 import usePublishEvent from "@/hooks/usePublishEvent";
+import { uniqueId } from "lodash";
 import { useRef } from "react";
 
 const PublishCommunity = () => {
@@ -28,7 +29,7 @@ const PublishCommunity = () => {
                 name,
                 desc,
               }),
-              tags: [["d", "second-community"]],
+              tags: [["d", uniqueId()]],
             });
         }}
       >

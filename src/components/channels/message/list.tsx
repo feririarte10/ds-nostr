@@ -20,7 +20,7 @@ const MessagesList = ({ channelId }: { channelId: string }) => {
   const { restartSubscription, events: messages } = useSubscription({
     filters: [
       {
-        kinds: [42],
+        kinds: [33017],
         "#e": [channelId],
       },
     ],

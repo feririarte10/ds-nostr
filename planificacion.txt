@@ -1,11 +1,35 @@
-Crear comunidad (33015, #d = randomId, #t "community")
-Crear categoria (33015 - #d randomId, #t "category, #e id_comunidad) // author = ownerCommunity & admins
-Crear canal de texto (33015 - #d randomId, #t "channel", #e id_comunidad, #e id_category) // author = ownerCommunity & admins
+Crear comunidad (33015, #d = randomId)
 
-Mensaje en canal de texto (33016 - #d randomId, #e id_canal)
+Crear categoria (33016 - #d randomId, #t "category", #e id_comunidad) // author = ownerCommunity & admins
+Crear canal de texto (33016 - #d randomId, #t "channel", #e id_comunidad, #e id_category) // author = ownerCommunity & admins
 
-Ingreso a una comunidad (33017, #t "join-community")
-Verificar un usuario (33017, #t "verify-user") // author = ownerCommunity & admins
+Mensaje en canal de texto (33017 - #d randomId, #e id_canal, "root | reply")
+
+Ingreso a una comunidad (33018, #t "join-community")
+Verificar un usuario (33018, #t "verify-user") // author = ownerCommunity & admins
+Users Comunnity: 33018 join + 33018 verify
+
+hook useCommunity():
+  - community {
+    info: Community,
+    categories: [
+      {
+        id
+        name
+        created_at
+        event
+        channels: Channel[]
+      }
+    ],
+    users: [ { user: User, event: Join-NDKEvent, verified: boolean } ]
+  }
+
+  suscripción: 
+    - comunidad (closeOnEose)
+      - usuarios (join-community & verify-user) > + fetchProfile()
+      - categorias [communityId]
+      - canales [communityId]
+        - mensajes [channelId]
 
 User: {
   npub: string
@@ -20,7 +44,8 @@ Community: {
    desc: string
    logo: string
    banner: string
-   created_at: string
+   onlyVerifiedUsers: booslean
+   created_at: Date / int
    event
 }
 

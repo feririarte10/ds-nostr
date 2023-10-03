@@ -1,15 +1,24 @@
 //@ts-nocheck
 import usePublishEvent from "@/hooks/usePublishEvent";
 import React, { useRef } from "react";
-import { randomString } from "../category/create";
+import { uniqueId } from "lodash";
 
-const CreateChannel = ({
-  communityId,
-  categoryId,
-}: {
-  communityId: string;
-  categoryId: string;
-}) => {
+export function randomString(length) {
+  var chars =
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".split("");
+
+  if (!length) {
+    length = Math.floor(Math.random() * chars.length);
+  }
+
+  var str = "";
+  for (var i = 0; i < length; i++) {
+    str += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return str;
+}
+
+const CreateCategory = ({ communityId }: { communityId: string }) => {
   const { publish } = usePublishEvent();
   const nameRef = useRef();
 
@@ -17,7 +26,7 @@ const CreateChannel = ({
 
   return (
     <div>
-      <h1>Crear un canal</h1>
+      <h1>Crear una categoria</h1>
       <label htmlFor="name">Nombre</label>
       <input name="name" ref={nameRef} type="text" />
 
@@ -34,12 +43,8 @@ const CreateChannel = ({
               }),
               tags: [
                 ["d", randomString(16)],
-                ["t", "text-channel"],
+                ["t", "category"],
                 ["e", communityId],
-                [
-                  "e",
-                  "316d45982d55f92d86ab073f56003d3e9e919ca8d3e65b0f11a3491b900a7d16",
-                ],
               ],
             });
 
@@ -53,4 +58,4 @@ const CreateChannel = ({
   );
 };
 
-export default CreateChannel;
+export default CreateCategory;

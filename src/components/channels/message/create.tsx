@@ -19,7 +19,7 @@ const CreateMessage = ({ channelId }) => {
 
           if (text) {
             const event = await publish({
-              kind: 42,
+              kind: 33017,
               content: JSON.stringify(text),
               tags: [["e", channelId, "wss://relay.damus.io/", "root"]],
             });
