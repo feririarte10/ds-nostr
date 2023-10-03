@@ -1,0 +1,32 @@
+.helpButton {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--primary-color);
+  border: none;
+  background: none;
+  padding: 0;
+  transition: color 300ms;
+  margin: 1rem auto;
+}
+
+@media screen and (min-width: 768px) {
+  .helpButton {
+    color: var(--secondary-text-color);
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .helpButton:hover {
+    color: var(--primary-color);
+  }
+}

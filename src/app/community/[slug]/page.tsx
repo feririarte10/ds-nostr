@@ -1,15 +1,13 @@
 "use client";
-import CreateCategory from "@/components/category/create";
-import CreateChannel from "@/components/channels/create";
 import ChannelFrame from "@/components/channels/frame";
 import ChannelsList from "@/components/channels/list";
-import { useNostrify } from "@/contexts/Nostrify";
+import Modal from "@/components/modals/Modal";
+import { useModalContext } from "@/contexts/ModalContext";
 import useCommunity from "@/hooks/useCommunity";
-import "@/styles/community.css";
-import _ from "lodash";
 
 const Community = ({ params }: { params: { slug: string } }) => {
-  const { userPubkey } = useNostrify();
+  const { modalInfo } = useModalContext();
+
   const { communityInfo, categoriesInfo, selectedChannel, setSelectedChannel } =
     useCommunity(params.slug);
 
@@ -21,19 +19,10 @@ const Community = ({ params }: { params: { slug: string } }) => {
         <h1>{communityInfo.name}</h1>
 
         <ChannelsList
+          communityInfo={communityInfo}
           categoriesInfo={categoriesInfo}
           setSelectedChannel={setSelectedChannel}
         />
-
-        {communityInfo.event?.pubkey === userPubkey && (
-          <>
-            <CreateCategory communityId={communityInfo.event.id} />
-            <CreateChannel
-              communityId={communityInfo.event.id}
-              categoryId="1"
-            />
-          </>
-        )}
       </aside>
 
       {selectedChannel.length > 0 ? (
@@ -43,6 +32,19 @@ const Community = ({ params }: { params: { slug: string } }) => {
           <span>No has seleccionado ningún canal de texto</span>
         </div>
       )}
+
+      <Modal
+        title={modalInfo.title}
+        description={modalInfo.description}
+        isOpen={modalInfo.isOpen}
+        loading={modalInfo.loading}
+        acceptButton={modalInfo.acceptButton}
+        cancelButton={modalInfo.cancelButton}
+        closeButton={modalInfo.closeButton}
+        closeModal={modalInfo.closeModal}
+      >
+        {modalInfo.children}
+      </Modal>
     </div>
   );
 };

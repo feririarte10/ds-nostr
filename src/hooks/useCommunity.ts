@@ -8,7 +8,7 @@ import {
   getMultipleTags,
 } from "@/utils/NDKEventHandlers";
 
-interface Community {
+export interface Community {
   name: string;
   desc: string;
   event: NostrEvent;

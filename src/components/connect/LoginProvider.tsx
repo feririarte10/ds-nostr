@@ -2,7 +2,6 @@
 "use client";
 import { useNostrify } from "@/contexts/Nostrify";
 import React, { useEffect, useRef } from "react";
-import "@/styles/login.css";
 
 const LoginProvider = ({ children }) => {
   const {

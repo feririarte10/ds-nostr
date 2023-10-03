@@ -1,0 +1,84 @@
+.button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 14px;
+  width: 100%;
+  font-size: 18px;
+  -ms-grid-column: 1;
+  -ms-grid-column-span: 4;
+  grid-column: 1/5;
+  -ms-grid-row-align: end;
+  align-self: end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  font-size: 16px;
+  height: 46px;
+}
+
+.disabled {
+  background-color: var(--disabled-element);
+}
+
+.modalBtn {
+  padding: 10px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.btnsContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.btnsContainer .button:nth-child(2) {
+  -ms-flex-preferred-size: 15%;
+  flex-basis: 15%;
+}
+
+@media screen and (min-width: 768px) {
+  .button {
+    margin-left: auto;
+    margin-right: auto;
+    height: 50px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .button {
+    -webkit-transition: all 100ms ease-out;
+    -o-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
+    cursor: pointer;
+    margin-top: auto;
+  }
+
+  .button:active,
+  .button:hover:active {
+    background: var(--active-element);
+  }
+
+  .button:hover {
+    background: var(--primary-color-hover);
+  }
+
+  .button.disabled:hover,
+  .button.disabled:active {
+    background-color: var(--disabled-element);
+  }
+}

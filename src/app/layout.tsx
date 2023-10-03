@@ -1,3 +1,4 @@
+import "@/styles/globals.css";
 import LoginProvider from "@/components/connect/LoginProvider";
 import { NostrifyProvider } from "@/contexts/Nostrify";
 import type { Metadata } from "next";
@@ -19,15 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="data-theme" defaultTheme="dark">
-          <div className="layout">
-            <main className="main">
-              <NostrifyProvider
-                explicitRelayUrls={["wss://relay.damus.io/", "wss://nos.lol/"]}
-              >
-                <LoginProvider>{children}</LoginProvider>
-              </NostrifyProvider>
-            </main>
-          </div>
+          <NostrifyProvider
+            explicitRelayUrls={[
+              "wss://relay.damus.io/",
+              "wss://nostr-pub.wellorder.net/",
+              "wss://nos.lol/",
+            ]}
+          >
+            <LoginProvider>{children}</LoginProvider>
+          </NostrifyProvider>
         </ThemeProvider>
       </body>
     </html>

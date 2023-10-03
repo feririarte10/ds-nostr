@@ -1,7 +1,7 @@
 //@ts-nocheck
 import usePublishEvent from "@/hooks/usePublishEvent";
 import React, { useRef } from "react";
-import { uniqueId } from "lodash";
+import Button from "../buttons/Button";
 
 export function randomString(length) {
   var chars =
@@ -25,13 +25,11 @@ const CreateCategory = ({ communityId }: { communityId: string }) => {
   if (!communityId) return <span>Cargando...</span>;
 
   return (
-    <div>
-      <h1>Crear una categoria</h1>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <label htmlFor="name">Nombre</label>
-      <input name="name" ref={nameRef} type="text" />
+      <input name="name" ref={nameRef} type="text" style={{ margin: "1rem" }} />
 
-      <button
-        type="submit"
+      <Button
         onClick={async () => {
           const name = nameRef.current.value;
 
@@ -51,9 +49,8 @@ const CreateCategory = ({ communityId }: { communityId: string }) => {
             if (event.success) nameRef.current.value = "";
           }
         }}
-      >
-        Enviar
-      </button>
+        btnText="Crear"
+      />
     </div>
   );
 };
