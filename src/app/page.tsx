@@ -11,6 +11,7 @@ export default function Home() {
       <p>Tu clave publica: {userPubkey}</p>
 
       <SelfComunnity pubkey={userPubkey} />
+
       <PublishCommunity />
     </main>
   );

@@ -1,0 +1,4 @@
+- agregar nueva modal
+- Crear categoria si no hay nada para ver en la comunidad
+- crear categoria desde modal
+- crear canal de texto con un botón + al lado de la categoria. Crear desde modal 

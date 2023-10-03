@@ -14,7 +14,7 @@ interface Community {
   event: NostrEvent;
 }
 
-type CategoriesInformation = {
+export type CategoriesInformation = {
   category: NostrEvent;
   channels: NostrEvent[];
 };

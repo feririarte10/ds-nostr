@@ -1,7 +1,7 @@
-import { useSubscription } from "@/hooks/useSubscription";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import { nip19 } from "nostr-tools";
+import useChannelMessages from "@/hooks/useChannelMessages";
 
 const formatAddress = (address: string, size: number = 22): string => {
   if (address) {
@@ -17,31 +17,13 @@ const formatAddress = (address: string, size: number = 22): string => {
 };
 
 const MessagesList = ({ channelId }: { channelId: string }) => {
-  const { restartSubscription, events: messages } = useSubscription({
-    filters: [
-      {
-        kinds: [33017],
-        "#e": [channelId],
-      },
-    ],
-    options: {
-      closeOnEose: false,
-    },
-    enabled: Boolean(channelId),
-  });
-
-  useEffect(() => {
-    restartSubscription();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [channelId]);
-
-  const sortedMessages = messages.sort((a, b) => a.created_at - b.created_at);
+  const { messages } = useChannelMessages({ channelId });
 
   return (
     <div className="messages">
-      {sortedMessages.length > 0 ? (
+      {messages.length > 0 ? (
         <>
-          {sortedMessages.map((eventMessage, index) => {
+          {messages.map((eventMessage, index) => {
             const parsedContent = JSON.parse(eventMessage.content);
 
             return (
