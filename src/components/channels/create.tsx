@@ -38,7 +38,7 @@ const CreateChannel = ({
                 ["e", communityId],
                 [
                   "e",
-                  "316d45982d55f92d86ab073f56003d3e9e919ca8d3e65b0f11a3491b900a7d16",
+                  "2633fd315dbcea77f75b3c9b77268be76b825243586faad260b67322e58e487f",
                 ],
               ],
             });
