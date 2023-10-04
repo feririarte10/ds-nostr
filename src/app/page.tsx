@@ -1,5 +1,5 @@
 "use client";
-import PublishCommunity from "@/components/community/publish";
+import CreateCommunity from "@/components/community/create";
 import SelfComunnity from "@/components/community/selfcomunnity";
 import Modal from "@/components/modals/Modal";
 import { useModalContext } from "@/contexts/ModalContext";
@@ -19,7 +19,7 @@ export default function Home() {
       closeModal,
       isOpen: true,
       loading: false,
-      children: <PublishCommunity />,
+      children: <CreateCommunity />,
     });
   };
 

@@ -33,7 +33,6 @@ export interface INostrContext {
   connectWithExtension: () => void;
   connectWithKey: (privateKey: string) => Promise<boolean>;
   connectWithHexKey: (hexKey: string) => Promise<boolean>;
-  requestPublicKey: () => Promise<string>;
   userPubkey: string;
 }
 
@@ -67,8 +66,11 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
       });
 
       setNDK(ndkProvider);
-
       ndkProvider.connect();
+
+      const user: NDKUser = await signer.user();
+      if (user && user._hexpubkey) setUserPubkey(user._hexpubkey);
+
       return true;
     } catch (err) {
       console.log(err);
@@ -96,9 +98,6 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
       const privateKeySigner = new NDKPrivateKeySigner(hexKey);
       const ndkInitialized: boolean = await initializeNDK(privateKeySigner);
 
-      const user: NDKUser = await privateKeySigner.user();
-      if (user && user._hexpubkey) setUserPubkey(user._hexpubkey);
-
       localStorage.setItem("private_key", hexKey);
       return ndkInitialized;
     } catch (err) {
@@ -110,23 +109,30 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
   const connectWithExtension = async () => {
     if (!providers.webln)
       return alert("No tienes una extensión que te permita conectarte");
-    await providers.webln.enable();
-
-    const pubKey = await requestPublicKey();
-    if (pubKey) setUserPubkey(pubKey);
-  };
-
-  const requestPublicKey = async () => {
-    if (!providers.nostr) return null;
 
     try {
-      await providers.nostr.enable();
-      const _pubKey = await providers.nostr.getPublicKey();
-      return _pubKey;
-    } catch {
-      return null;
+      await providers.webln.enable();
+
+      const nip07signer = new NDKNip07Signer();
+      const ndkInitialized = await initializeNDK(nip07signer);
+
+      return ndkInitialized;
+    } catch (err) {
+      return false;
     }
   };
+
+  // const requestPublicKey = async () => {
+  //   if (!providers.nostr) return null;
+
+  //   try {
+  //     await providers.nostr.enable();
+  //     const _pubKey = await providers.nostr.getPublicKey();
+  //     return _pubKey;
+  //   } catch {
+  //     return null;
+  //   }
+  // };
 
   useEffect(() => {
     loadProviders();
@@ -141,7 +147,6 @@ const useNOSTR = (explicitRelayUrls: string[]): INostrContext => {
     connectWithKey,
     connectWithHexKey,
     userPubkey,
-    requestPublicKey,
   };
 };
 

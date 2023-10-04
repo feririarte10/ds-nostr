@@ -52,6 +52,10 @@ button {
   cursor: pointer;
 }
 
+.mg-5 {
+  margin: 5px;
+}
+
 // Generics
 button {
   &.btn {
@@ -60,7 +64,6 @@ button {
 
   &.btn-primary {
     height: 44px;
-
     padding: 0 12px;
 
     background-color: #C2F76C;

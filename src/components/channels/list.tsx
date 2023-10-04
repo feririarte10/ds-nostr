@@ -1,5 +1,5 @@
 import { CategoriesInformation, Community } from "@/hooks/useCommunity";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useMemo } from "react";
 import { NostrEvent } from "@nostr-dev-kit/ndk";
 import _ from "lodash";
 import { useModalContext } from "@/contexts/ModalContext";
@@ -19,6 +19,11 @@ const ChannelsList = ({
 }) => {
   const { userPubkey } = useNostrify();
   const { setModalProps, closeModal } = useModalContext();
+
+  const isAdministrator: boolean = useMemo(
+    () => communityInfo.event?.pubkey === userPubkey,
+    [communityInfo, userPubkey]
+  );
 
   const createCategoryModal = () => {
     setModalProps({
@@ -65,13 +70,15 @@ const ChannelsList = ({
                 <div>
                   <h3>{parsedContent.name}</h3>
 
-                  <button
-                    onClick={() =>
-                      createChannelModal(infoCategory.category?.id)
-                    }
-                  >
-                    <Plus />
-                  </button>
+                  {isAdministrator && (
+                    <button
+                      onClick={() =>
+                        createChannelModal(infoCategory.category?.id)
+                      }
+                    >
+                      <Plus />
+                    </button>
+                  )}
                 </div>
 
                 {infoCategory.channels.length > 0 &&
@@ -89,12 +96,6 @@ const ChannelsList = ({
               </>
             );
           })}
-
-          {communityInfo.event?.pubkey === userPubkey && (
-            <button className="btn btn-primary" onClick={createCategoryModal}>
-              Crear nueva categoria
-            </button>
-          )}
         </ul>
       ) : (
         <div className="welcome">
@@ -102,13 +103,13 @@ const ChannelsList = ({
             <h3>Bienvenido a tu nuevo servidor.</h3>
             <p>Empieza a crear nuevas comunidades virtuales.</p>
           </div>
-
-          {communityInfo.event?.pubkey === userPubkey && (
-            <button className="btn btn-primary" onClick={createCategoryModal}>
-              Crear nueva categoria
-            </button>
-          )}
         </div>
+      )}
+
+      {isAdministrator && (
+        <button className="btn btn-primary mg-5" onClick={createCategoryModal}>
+          Crear nueva categoria
+        </button>
       )}
     </div>
   );
