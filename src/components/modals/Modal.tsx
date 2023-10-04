@@ -1,8 +1,8 @@
-import Button from '@/components/buttons/Button';
-import { X } from '@/components/Icons/Icons';
-import { ModalLoader } from '@/components/Loader/Loader';
-import { ReactNode, memo, useRef } from 'react';
-import HelpButton from '../buttons/HelpButton';
+import Button from "@/components/buttons/Button";
+import { X } from "@/components/Icons/Icons";
+import { ModalLoader } from "@/components/Loader/Loader";
+import { ReactNode, memo, useRef } from "react";
+import HelpButton from "../buttons/HelpButton";
 
 export type ModalProps = {
   title: string;
@@ -18,19 +18,21 @@ export type ModalProps = {
   children?: ReactNode;
 };
 
-const Modal = ({
-  icon,
-  title,
-  description,
-  closeModal,
-  cancelButton,
-  acceptButton,
-  closeButton,
-  onClick,
-  loading,
-  isOpen,
-  children,
-}: ModalProps) => {
+const Modal = ({ modalInfo }: { modalInfo: ModalProps }) => {
+  const {
+    icon,
+    title,
+    description,
+    closeModal,
+    cancelButton,
+    acceptButton,
+    closeButton,
+    onClick,
+    loading,
+    isOpen,
+    children,
+  } = modalInfo;
+
   const nodeRef: any = useRef<HTMLDivElement>();
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -42,9 +44,9 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className='modal' onClick={handleOverlayClick}>
-      <div className='modal-content' ref={nodeRef}>
-        <header className='modal-header'>
+    <div className="modal" onClick={handleOverlayClick}>
+      <div className="modal-content" ref={nodeRef}>
+        <header className="modal-header">
           <span>
             {icon}
             {title}
@@ -68,7 +70,7 @@ const Modal = ({
             {acceptButton && (
               <Button
                 onClick={onClick ? onClick : () => null}
-                btnText={'Confirmar'}
+                btnText={"Confirmar"}
                 isModal={true}
                 isDisabled={false}
                 loading={false}
@@ -77,7 +79,9 @@ const Modal = ({
           </>
         )}
 
-        {cancelButton && <HelpButton btnText={'Cancelar'} onClick={closeModal} />}
+        {cancelButton && (
+          <HelpButton btnText={"Cancelar"} onClick={closeModal} />
+        )}
       </div>
     </div>
   );

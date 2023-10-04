@@ -1,3 +1,70 @@
+kind  34550
+crea comunidad -> #d randString
+<community metadata> (name, desc, logo, banner, onlyVerifiedUsers, created_at, admins, moderators)
+
+kind 34551
+metadata comunidad -> tag #d kind:34550_id(communityId)
+
+
+kind 34552
+ingresar a comunidad -> tag #d kind:34550_id(communityId)
+aceptar usuario -> tag #d kind:34552.pubkey / #e kind:34550_id(communityId)
+
+
+kind 34553
+crea categoría -> tag #d randString / tag #e kind:34550_id
+<category name>
+
+
+kind 40 
+canal de texto -> #r communityStringId / (#e kind:34550_id(communityId))
+thread de texto -> (#e canalId kind 40)
+
+kind 41 -
+metadata de canal -> (#e id canal kind 40) 
+metadata de la categoría -> (#e categoryId kind 1040)
+
+kind 42
+mensaje de texto -> (#e event id kind 40)
+root | reply (#e event id message)
+
+kind 43
+hide message -> (#e event id kind 42)
+
+kind 44
+mute user -> (#p pubKey user)
+
+kind 7
+reaction message -> (#e event id kind 42)
+
+emojis
+stickers
+threads
+mentions
+roles
+
+---------------------------------------------------
+
+filter kind 1040 -> create category
+filter kind 1041 -> update category
+filter kind 40  -> create channel
+filter kind 41 -> update category
+
+categories: {
+  1040.Id: {
+    metadata: { (1040 | 1041).content },
+    event: 1040,
+    channels: Channel[]
+  }
+}
+
+Channel {
+  id: 40.id,
+  metadata: (40 | 41).content,
+  event: 40,
+}
+
+--------------------------------------------------
 Crear comunidad (33015, #d = randomId)
 
 Crear categoria (33016 - #d randomId, #t "category", #e id_comunidad) // author = ownerCommunity & admins

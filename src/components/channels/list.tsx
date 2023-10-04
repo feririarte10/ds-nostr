@@ -1,12 +1,12 @@
-import { CategoriesInformation, Community } from '@/hooks/useCommunity';
-import React, { Dispatch, SetStateAction } from 'react';
-import { NostrEvent } from '@nostr-dev-kit/ndk';
-import _ from 'lodash';
-import { useModalContext } from '@/contexts/ModalContext';
-import CreateCategory from '../category/create';
-import { useNostrify } from '@/contexts/Nostrify';
-import { Plus } from '../Icons/Icons';
-import CreateChannel from './create';
+import { CategoriesInformation, Community } from "@/hooks/useCommunity";
+import React, { Dispatch, SetStateAction } from "react";
+import { NostrEvent } from "@nostr-dev-kit/ndk";
+import _ from "lodash";
+import { useModalContext } from "@/contexts/ModalContext";
+import CreateCategory from "../category/create";
+import { useNostrify } from "@/contexts/Nostrify";
+import { Plus } from "../Icons/Icons";
+import CreateChannel from "./create";
 
 const ChannelsList = ({
   communityInfo,
@@ -22,8 +22,8 @@ const ChannelsList = ({
 
   const createCategoryModal = () => {
     setModalProps({
-      title: 'Crear categoría',
-      description: '',
+      title: "Crear categoría",
+      description: "",
       acceptButton: false,
       closeButton: true,
       cancelButton: false,
@@ -36,15 +36,20 @@ const ChannelsList = ({
 
   const createChannelModal = (categoryId: string) => {
     setModalProps({
-      title: 'Crear canal de texto',
-      description: '',
+      title: "Crear canal de texto",
+      description: "",
       acceptButton: false,
       closeButton: true,
       cancelButton: false,
       closeModal,
       isOpen: true,
       loading: false,
-      children: <CreateChannel communityId={communityInfo.event?.id} categoryId={categoryId} />,
+      children: (
+        <CreateChannel
+          communityId={communityInfo.event?.id}
+          categoryId={categoryId}
+        />
+      ),
     });
   };
 
@@ -60,8 +65,11 @@ const ChannelsList = ({
                 <div>
                   <h3>{parsedContent.name}</h3>
 
-                  <button onClick={() => createChannelModal(infoCategory.category?.id)}>
-                    {/* Agregar canal */}
+                  <button
+                    onClick={() =>
+                      createChannelModal(infoCategory.category?.id)
+                    }
+                  >
                     <Plus />
                   </button>
                 </div>
@@ -71,24 +79,32 @@ const ChannelsList = ({
                     const channelContent = JSON.parse(channel.content);
 
                     return (
-                      <li key={channel.id} className='channel active'>
-                        <button onClick={() => setSelectedChannel(channel.id)}># {channelContent.name}</button>
+                      <li key={channel.id} className="channel active">
+                        <button onClick={() => setSelectedChannel(channel.id)}>
+                          # {channelContent.name}
+                        </button>
                       </li>
                     );
                   })}
               </>
             );
           })}
+
+          {communityInfo.event?.pubkey === userPubkey && (
+            <button className="btn btn-primary" onClick={createCategoryModal}>
+              Crear nueva categoria
+            </button>
+          )}
         </ul>
       ) : (
-        <div className='welcome'>
+        <div className="welcome">
           <div>
             <h3>Bienvenido a tu nuevo servidor.</h3>
-            <p>Empiezza a crear nuevas comunidades virtuales.</p>
+            <p>Empieza a crear nuevas comunidades virtuales.</p>
           </div>
 
           {communityInfo.event?.pubkey === userPubkey && (
-            <button className='btn btn-primary' onClick={createCategoryModal}>
+            <button className="btn btn-primary" onClick={createCategoryModal}>
               Crear nueva categoria
             </button>
           )}
