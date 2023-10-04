@@ -1,17 +1,16 @@
 //@ts-nocheck
-import usePublishEvent from "@/hooks/usePublishEvent";
-import React, { useRef } from "react";
-import Button from "../buttons/Button";
+import usePublishEvent from '@/hooks/usePublishEvent';
+import React, { useRef } from 'react';
+import Button from '../buttons/Button';
 
 export function randomString(length) {
-  var chars =
-    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".split("");
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'.split('');
 
   if (!length) {
     length = Math.floor(Math.random() * chars.length);
   }
 
-  var str = "";
+  var str = '';
   for (var i = 0; i < length; i++) {
     str += chars[Math.floor(Math.random() * chars.length)];
   }
@@ -25,33 +24,39 @@ const CreateCategory = ({ communityId }: { communityId: string }) => {
   if (!communityId) return <span>Cargando...</span>;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <label htmlFor="name">Nombre</label>
-      <input name="name" ref={nameRef} type="text" style={{ margin: "1rem" }} />
+    <>
+      <div className='modal-body'>
+        <div className='input-group'>
+          <label htmlFor='name'>Nombre</label>
+          <input name='name' ref={nameRef} type='text' placeholder='Escriba un nombre' />
+        </div>
+      </div>
 
-      <Button
-        onClick={async () => {
-          const name = nameRef.current.value;
+      <footer>
+        <Button
+          onClick={async () => {
+            const name = nameRef.current.value;
 
-          if (name) {
-            const event = publish({
-              kind: 33016,
-              content: JSON.stringify({
-                name,
-              }),
-              tags: [
-                ["d", randomString(16)],
-                ["t", "category"],
-                ["e", communityId],
-              ],
-            });
+            if (name) {
+              const event = publish({
+                kind: 33016,
+                content: JSON.stringify({
+                  name,
+                }),
+                tags: [
+                  ['d', randomString(16)],
+                  ['t', 'category'],
+                  ['e', communityId],
+                ],
+              });
 
-            if (event.success) nameRef.current.value = "";
-          }
-        }}
-        btnText="Crear"
-      />
-    </div>
+              if (event.success) nameRef.current.value = '';
+            }
+          }}
+          btnText='Crear'
+        />
+      </footer>
+    </>
   );
 };
 

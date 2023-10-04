@@ -1,6 +1,6 @@
 //@ts-nocheck
-import usePublishEvent from "@/hooks/usePublishEvent";
-import React, { useRef } from "react";
+import usePublishEvent from '@/hooks/usePublishEvent';
+import React, { useRef } from 'react';
 
 const CreateMessage = ({ channelId }) => {
   const { publish } = usePublishEvent();
@@ -9,11 +9,12 @@ const CreateMessage = ({ channelId }) => {
   if (!channelId) return <span>Cargando...</span>;
 
   return (
-    <div className="message-input">
-      <input name="text" ref={textRef} type="text" />
+    <div className='message-input'>
+      <input name='text' ref={textRef} placeholder='Enviar mensaje' type='text' />
 
       <button
-        type="submit"
+        type='submit'
+        className='btn btn-primary'
         onClick={async () => {
           const text = textRef.current.value;
 
@@ -21,10 +22,10 @@ const CreateMessage = ({ channelId }) => {
             const event = await publish({
               kind: 33017,
               content: JSON.stringify(text),
-              tags: [["e", channelId, "wss://relay.damus.io/", "root"]],
+              tags: [['e', channelId, 'wss://relay.damus.io/', 'root']],
             });
 
-            if (event.success) textRef.current.value = "";
+            if (event.success) textRef.current.value = '';
           }
         }}
       >

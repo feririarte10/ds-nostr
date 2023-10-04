@@ -1,9 +1,8 @@
-import Button from "@/components/buttons/Button";
-import { X } from "@/components/Icons/Icons";
-import { ModalLoader } from "@/components/Loader/Loader";
-import { ReactNode, memo, useRef } from "react";
-import styles from "./Modals.module.css";
-import HelpButton from "../buttons/HelpButton";
+import Button from '@/components/buttons/Button';
+import { X } from '@/components/Icons/Icons';
+import { ModalLoader } from '@/components/Loader/Loader';
+import { ReactNode, memo, useRef } from 'react';
+import HelpButton from '../buttons/HelpButton';
 
 export type ModalProps = {
   title: string;
@@ -43,16 +42,16 @@ const Modal = ({
   if (!isOpen) return null;
 
   return (
-    <div className={styles.modalContainer} onClick={handleOverlayClick}>
-      <div className={styles.modal} ref={nodeRef}>
-        <header className={styles.header}>
-          <span className={styles.title}>
+    <div className='modal' onClick={handleOverlayClick}>
+      <div className='modal-content' ref={nodeRef}>
+        <header className='modal-header'>
+          <span>
             {icon}
             {title}
           </span>
 
           {closeButton && (
-            <button className={styles.closeButton} onClick={closeModal}>
+            <button onClick={closeModal}>
               <X />
             </button>
           )}
@@ -69,7 +68,7 @@ const Modal = ({
             {acceptButton && (
               <Button
                 onClick={onClick ? onClick : () => null}
-                btnText={"Confirmar"}
+                btnText={'Confirmar'}
                 isModal={true}
                 isDisabled={false}
                 loading={false}
@@ -78,9 +77,7 @@ const Modal = ({
           </>
         )}
 
-        {cancelButton && (
-          <HelpButton btnText={"Cancelar"} onClick={closeModal} />
-        )}
+        {cancelButton && <HelpButton btnText={'Cancelar'} onClick={closeModal} />}
       </div>
     </div>
   );

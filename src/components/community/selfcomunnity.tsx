@@ -1,6 +1,6 @@
-import { useSubscription } from "@/hooks/useSubscription";
-import Link from "next/link";
-import React from "react";
+import { useSubscription } from '@/hooks/useSubscription';
+import Link from 'next/link';
+import React from 'react';
 
 const SelfComunnity = ({ pubkey }: { pubkey: string }) => {
   const { events: userCommunityList } = useSubscription({
@@ -24,9 +24,7 @@ const SelfComunnity = ({ pubkey }: { pubkey: string }) => {
           const communityContent = JSON.parse(communityEvent.content);
           return (
             <div key={`community-${index}`}>
-              <Link href={`/community/${communityEvent.id}`}>
-                {communityContent.name}
-              </Link>
+              <Link href={`/community/${communityEvent.id}`}>{communityContent.name}</Link>
             </div>
           );
         })

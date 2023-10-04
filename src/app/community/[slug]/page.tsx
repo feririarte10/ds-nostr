@@ -1,22 +1,23 @@
-"use client";
-import ChannelFrame from "@/components/channels/frame";
-import ChannelsList from "@/components/channels/list";
-import Modal from "@/components/modals/Modal";
-import { useModalContext } from "@/contexts/ModalContext";
-import useCommunity from "@/hooks/useCommunity";
+'use client';
+import ChannelFrame from '@/components/channels/frame';
+import ChannelsList from '@/components/channels/list';
+import Modal from '@/components/modals/Modal';
+import { useModalContext } from '@/contexts/ModalContext';
+import useCommunity from '@/hooks/useCommunity';
 
 const Community = ({ params }: { params: { slug: string } }) => {
   const { modalInfo } = useModalContext();
 
-  const { communityInfo, categoriesInfo, selectedChannel, setSelectedChannel } =
-    useCommunity(params.slug);
+  const { communityInfo, categoriesInfo, selectedChannel, setSelectedChannel } = useCommunity(params.slug);
 
   if (!communityInfo.event) return <span>Cargando...</span>;
 
   return (
-    <div>
-      <aside className="sidebar">
-        <h1>{communityInfo.name}</h1>
+    <div className='viewport'>
+      <aside className='sidebar'>
+        <div className='community'>
+          <h1>{communityInfo.name}</h1>
+        </div>
 
         <ChannelsList
           communityInfo={communityInfo}
@@ -28,8 +29,8 @@ const Community = ({ params }: { params: { slug: string } }) => {
       {selectedChannel.length > 0 ? (
         <ChannelFrame channelId={selectedChannel} />
       ) : (
-        <div className="content">
-          <span>No has seleccionado ningún canal de texto</span>
+        <div className='content'>
+          <h1>No has seleccionado ningún canal de texto</h1>
         </div>
       )}
 
